@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DAXMobileWorkflowGeneralBusinessEvent</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[BusinessEvents(classStr(DAXMobileWorkflowGeneralBusinessEventContract), 'DAXMobileWorkflowGeneralBusinessEvent', 'DAXMobileWorkflowGeneralBusinessEvent', ModuleAxapta::WorkflowWorkItem)]
+final class DAXMobileWorkflowGeneralBusinessEvent extends BusinessEventsBase
+{
+    private BusinessEventsWorkflowWorkItemDataContract workflowWorkItemDataContract;
+
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>parmWorkflowWorkItemDataContract</Name>
+				<Source><![CDATA[
+    private BusinessEventsWorkflowWorkItemDataContract parmWorkflowWorkItemDataContract(BusinessEventsWorkflowWorkItemDataContract _contract = workflowWorkItemDataContract)
+    {
+        workflowWorkItemDataContract = _contract;
+
+        return workflowWorkItemDataContract;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>newFromWorkflowWorkItemDataContract</Name>
+				<Source><![CDATA[
+    public static DAXMobileWorkflowGeneralBusinessEvent newFromWorkflowWorkItemDataContract(BusinessEventsWorkflowWorkItemDataContract _contract)
+    {
+        DAXMobileWorkflowGeneralBusinessEvent businessEvent = new DAXMobileWorkflowGeneralBusinessEvent();
+        businessEvent.parmWorkflowWorkItemDataContract(_contract);
+
+        return businessEvent;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>new</Name>
+				<Source><![CDATA[
+    private void new()
+    {
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>buildContract</Name>
+				<Source><![CDATA[
+    [Wrappable(true), Replaceable(true)]
+    public BusinessEventsContract buildContract()
+    {
+        return DAXMobileWorkflowGeneralBusinessEventContract::newFromWorkflowWorkItemDataContract(workflowWorkItemDataContract);
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxMenu xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="Microsoft.Dynamics.AX.Metadata.V1">
+	<Name>DAXMobileWorkflowSetup</Name>
+	<Label>DAX Mobile Workflow Setup</Label>
+	<Elements>
+		<AxMenuElement xmlns=""
+			i:type="AxMenuElementMenuItem">
+			<Name>DAXMobileWorkflowTypeSetup</Name>
+			<MenuItemName>DAXMobileWorkflowTypeSetup</MenuItemName>
+		</AxMenuElement>
+		<AxMenuElement xmlns=""
+			i:type="AxMenuElementMenuItem">
+			<Name>DAXMobileWorkflowFieldSetup</Name>
+			<MenuItemName>DAXMobileWorkflowFieldSetup</MenuItemName>
+		</AxMenuElement>
+	</Elements>
+</AxMenu>

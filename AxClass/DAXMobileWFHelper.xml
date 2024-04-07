@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DAXMobileWFHelper</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+class DAXMobileWFHelper 
+{
+    Newtonsoft.Json.JsonTextWriter jsonTextWriter;
+    System.IO.StringWriter         stringWriter;
+
+    str gWorkflowCorrelationId;
+    DataAreaId gCompanyId;
+    RecId gRecId;
+    TableId gTableId;
+
+    Array gAttachmentStream;
+    Array gAttachmentNames;
+    Array gRecordData;
+    str gSubject;
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>construct</Name>
+				<Source><![CDATA[
+    public static DAXMobileWFHelper construct(str _workflowCorrelationId)
+    {
+        WorkflowTrackingStatusTable trackingStatus;
+
+        select firstonly trackingStatus
+            where trackingStatus.CorrelationId == str2Guid(_workflowCorrelationId);
+
+        switch(trackingStatus.ContextTableId)
+        {
+            default:
+                return new DAXMobileWFHelper(_workflowCorrelationId,trackingStatus.ContextCompanyId,trackingStatus.ContextRecId,trackingStatus.ContextTableId);
+                break;
+        }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>new</Name>
+				<Source><![CDATA[
+    public void new(str _workflowCorrelationId,DataAreaId _companyId,RecId _recordId,TableId _tableId)
+    {
+        gWorkflowCorrelationId = _workflowCorrelationId;
+        gCompanyId = _companyId;
+        gRecId = _recordId;
+        gTableId = _tableId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>validate</Name>
+				<Source><![CDATA[
+    public boolean validate()
+    {
+        boolean ret = true;
+
+        ret = DAXWorkflowTypesParameters::isActive(gWorkflowCorrelationId);
+
+        return ret;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>run</Name>
+				<Source><![CDATA[
+    public void run()
+    {
+        if(this.validate())
+        {
+            this.setAttachmentStreamArray();
+            this.setAttachmentNamesArray();
+            this.setRecordDataArray();
+            this.setSubject();
+        }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>setAttachmentStreamArray</Name>
+				<Source><![CDATA[
+    protected void setAttachmentStreamArray()
+    {
+        System.IO.Stream stream;
+        System.Byte[] bytes;
+        System.IO.MemoryStream memoryStream = new System.IO.MemoryStream();
+
+        gAttachmentStream = new Array(Types::String);
+        Counter arrayCount = 1;
+
+        str attachmentBase64;
+        DocuRef docuRef;
+
+        while select crosscompany docuRef
+            index hint RefIdx
+            order by Name asc
+            where docuRef.RefCompanyId == gCompanyId
+               && docuRef.RefTableId == gTableId
+               && docuRef.RefRecId == gRecId
+
+        {
+
+            stream = DocumentManagement::getAttachmentStream(docuRef);
+            stream.CopyTo(memoryStream);
+            bytes = memoryStream.ToArray();
+
+            attachmentBase64 = System.Convert::ToBase64String(bytes);
+            gAttachmentStream.value(arrayCount,attachmentBase64);
+            arrayCount++;
+
+            memoryStream.SetLength(0);
+        }
+
+        memoryStream.Close();
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>setAttachmentNamesArray</Name>
+				<Source><![CDATA[
+    protected void setAttachmentNamesArray()
+    {
+        gAttachmentNames = new Array(Types::String);
+        Counter arrayCount = 1;
+        DocuRef docuRef;
+        str fileName;
+
+
+        while select crosscompany docuRef
+        index hint RefIdx
+        order by Name asc
+        where docuRef.RefCompanyId == gCompanyId
+            && docuRef.RefTableId == gTableId
+            && docuRef.RefRecId == gRecId
+
+        {
+            fileName = docuRef.Name + "." + docuRef.docuValue().FileType;
+            gAttachmentNames.value(arrayCount,fileName);
+            arrayCount++;
+        }
+        
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>setRecordDataArray</Name>
+				<Source><![CDATA[
+    protected void setRecordDataArray()
+    {
+        gRecordData = new Array(Types::String);
+        Counter arrayCount = 1;
+
+        
+        DictTable dictTable = new DictTable(gTableId);
+
+        Common common = dictTable.makeRecord();
+
+        if(gCompanyId)
+        {
+            select firstonly crosscompany common
+                where common.RecId == gRecId
+                   && common.DataAreaId == gCompanyId;
+        }
+        else
+        {
+            select firstonly common
+                where common.RecId == gRecId;
+        }
+
+        this.addFieldsFromParameter(common,arrayCount);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>addFieldsFromParameter</Name>
+				<Source><![CDATA[
+    protected int addFieldsFromParameter(Common _common,int _arrayCount)
+    {
+        SySDictField dictField;
+        str fieldInfo;
+
+        DAXWorkflowFieldParametersLine fieldParameterLine;
+
+        while select fieldParameterLine
+            order by DisplayOrder asc
+            where fieldParameterLine.RefTableId == _common.TableId
+        {
+            dictField = new SySDictField(fieldParameterLine.RefTableId,fieldParameterLine.RefFieldId);
+
+            fieldInfo = strFmt("%1: %2",fieldId2PName(_common.TableId,dictField.id()),_common.(dictField.id()));
+
+            gRecordData.value(_arrayCount,fieldInfo);
+            _arrayCount++;
+        }
+
+        return _arrayCount;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>setSubject</Name>
+				<Source><![CDATA[
+    protected void setSubject()
+    {
+        gSubject = DAXWorkflowTypesParameters::find(gTableId).Subject;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getAttachmentStreamArray</Name>
+				<Source><![CDATA[
+    public Array getAttachmentStreamArray()
+    {
+        if(gAttachmentStream != null)
+            return gAttachmentStream;
+        else
+            return new Array(Types::void);
+        
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getAttachmentNamesArray</Name>
+				<Source><![CDATA[
+    public Array getAttachmentNamesArray()
+    {
+        if(gAttachmentNames != null)
+            return gAttachmentNames;
+        else
+            return new Array(Types::void);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getRecordDataArray</Name>
+				<Source><![CDATA[
+    public Array getRecordDataArray()
+    {
+        if(gRecordData != null)
+            return gRecordData;
+        else
+            return new Array(Types::void);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getSubject</Name>
+				<Source><![CDATA[
+    public str getSubject()
+    {
+        return gSubject;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getCompanyId</Name>
+				<Source><![CDATA[
+    public str getCompanyId()
+    {
+        return gCompanyId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getRefRecId</Name>
+				<Source><![CDATA[
+    public str getRefRecId()
+    {
+        return int642Str(gRecId);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getRefTableId</Name>
+				<Source><![CDATA[
+    public str getRefTableId()
+    {
+        return int2Str(gTableId);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getRefTableName</Name>
+				<Source><![CDATA[
+    public str getRefTableName()
+    {
+        return tableId2Name(gTableId);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>sendCustomBusinessEventRequest</Name>
+				<Source><![CDATA[
+    public void sendCustomBusinessEventRequest(BusinessEventsWorkflowWorkItemDataContract _contract)
+    {
+        DAXMobileWorkflowGeneralBusinessEvent::newFromWorkflowWorkItemDataContract(_contract).send();
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

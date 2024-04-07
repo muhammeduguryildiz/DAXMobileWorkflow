@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DAXMobileWorkflowGeneralBusinessEventContract</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[DataContract]
+final class DAXMobileWorkflowGeneralBusinessEventContract extends BusinessEventsContract
+{
+    //Standart
+    private WorkflowConfigurationVersionId workflowVersionNumber;
+    private WorkflowWorkItemSubject        workflowWorkItemSubject;
+    private WorkflowStepInstruction        workflowWorkItemDescription;
+    private WorkflowSequenceNumber         workflowSequenceNumber;
+    private WorkflowInstanceNumber         workflowInstanceNumber;
+    private WorkflowOutcomeName            outcome;
+    private WorkflowDueDateTime            workflowDueDate;
+    private WorkflowComment                workflowComment;
+    private CreatedDateTime                workflowCreatedDateTime;
+    private WorkflowOwner                  workflowOwner;
+    private WorkflowUser                   workitemOwner;
+    private WorkflowUser                   workflowOriginator;
+    private Email                          userEmail;
+    private Array                          outcomeList;
+    private Array                          serializedWorkflowDocumentData;
+    private str                            workflowWorkItemInstanceId;
+    private str                            workflowLastActionUser;
+    private str                            linkToWeb;
+    //Standart
+
+    //Custom data
+    private Array AttachedDocuments;
+    private Array FileNames;
+    private Array CustomData;
+    private str   CustomSubject;
+    private str   IsActive;
+    private str   RecordCompanyId;
+    private str   RecordRefRecId;
+    private str   RecordRefTableId;
+    private str   RecordRefTableName;
+    //Custom data
+
+    //Extends Level
+    private WorkflowEventCategory eventCategory;
+    private WorkflowTypeName      workflowTemplateName;
+    private RefRecId              RecId;
+    private str                   workflowCorrelationId;
+    private str                   WorkflowConfigurationId;
+    private str                   workflowDocument;
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>newFromWorkflowWorkItemDataContract</Name>
+				<Source><![CDATA[
+    //Extends Level
+    public static DAXMobileWorkflowGeneralBusinessEventContract newFromWorkflowWorkItemDataContract(BusinessEventsWorkflowWorkItemDataContract _workflowWorkItemDataContract)
+    {
+        var contract = new DAXMobileWorkflowGeneralBusinessEventContract();
+        contract.initialize(_workflowWorkItemDataContract);
+
+        return contract;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>initialize</Name>
+				<Source><![CDATA[
+    private void initialize(BusinessEventsWorkflowWorkItemDataContract _workflowWorkItemDataContract)
+    {
+        //Standart
+        serializedWorkflowDocumentData  = _workflowWorkItemDataContract.parmSerializedWorkflowDocument();
+        workflowWorkItemInstanceId      = _workflowWorkItemDataContract.parmWorkflowWorkItemInstanceid();
+        workflowWorkItemDescription     = _workflowWorkItemDataContract.parmWorkflowDescription();
+        workflowCreatedDateTime         = _workflowWorkItemDataContract.parmWorkflowCreatedDateTime();
+        workflowWorkItemSubject         = _workflowWorkItemDataContract.parmWorkflowWorkItemSubject();
+        workflowLastActionUser          = _workflowWorkItemDataContract.parmWorkflowLastActionuser();
+        workflowSequenceNumber          = _workflowWorkItemDataContract.parmWorkflowSequenceNumber();
+        workflowInstanceNumber          = _workflowWorkItemDataContract.parmWorkflowInstanceNumber();
+        workflowVersionNumber           = _workflowWorkItemDataContract.parmWorkflowConfigurationVersion();
+        workflowOriginator              = _workflowWorkItemDataContract.parmWorkflowOriginator();
+        workflowDueDate                 = _workflowWorkItemDataContract.parmWorkflowDuedate();
+        workflowComment                 = _workflowWorkItemDataContract.parmWorkflowComment();
+        workitemOwner                   = _workflowWorkItemDataContract.parmWorkflowWorkitemOwner();
+        workflowOwner                   = _workflowWorkItemDataContract.parmWorkflowOwner();
+        outcomeList                     = _workflowWorkItemDataContract.parmListOfOutcomes();
+        linkToWeb                       = _workflowWorkItemDataContract.parmLinkToWeb();
+        userEmail                       = _workflowWorkItemDataContract.parmWorkflowUserEmail();
+        outcome                         = _workflowWorkItemDataContract.parmWorkflowOutcomeName();
+        //Standart
+
+        //Custom data
+        RecordRefTableName          = _workflowWorkItemDataContract.parmRecordRefTableName();
+        RecordRefTableId            = _workflowWorkItemDataContract.parmRecordRefTableId();
+        RecordCompanyId             = _workflowWorkItemDataContract.parmRecordCompany();
+        RecordRefRecId              = _workflowWorkItemDataContract.parmRecordRefRecId();
+        IsActive                    = _workflowWorkItemDataContract.parmIsActive();
+        AttachedDocuments           = _workflowWorkItemDataContract.parmAttachments();
+        CustomSubject               = _workflowWorkItemDataContract.parmCustomSubject();
+        CustomData                  = _workflowWorkItemDataContract.parmCustomData();
+        FileNames                   = _workflowWorkItemDataContract.parmFileNames();
+        //Custom data
+
+        //Extends Level
+        WorkflowConfigurationId         = _workflowWorkItemDataContract.parmWorkflowConfigurationId();
+        workflowCorrelationId           = _workflowWorkItemDataContract.parmWorkflowCorrelationId();
+        workflowTemplateName            = _workflowWorkItemDataContract.parmWorkflowTemplateName();
+        workflowDocument                = _workflowWorkItemDataContract.parmWorkflowDocument();
+        eventCategory                   = _workflowWorkItemDataContract.parmWorkflowEventCategory();
+        RecId                           = _workflowWorkItemDataContract.parmRecId();
+        //Extends Level
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>new</Name>
+				<Source><![CDATA[
+    private void new()
+    {
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowWorkItemInstanceId</Name>
+				<Source><![CDATA[
+    //Standart
+    [DataMember('WorkflowWorkItemInstanceId'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowWorkItemInstanceId")]
+    public str parmWorkflowWorkItemInstanceId(str _WorkflowWorkItemInstanceId = WorkflowWorkItemInstanceId)
+    {
+        WorkflowWorkItemInstanceId = _WorkflowWorkItemInstanceId;
+
+        return WorkflowWorkItemInstanceId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkitemOwner</Name>
+				<Source><![CDATA[
+    [DataMember('WorkitemOwner'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowWorkitemUser")]
+    public WorkflowUser parmWorkitemOwner(WorkflowUser _WorkitemOwner = WorkitemOwner)
+    {
+        WorkitemOwner = _WorkitemOwner;
+
+        return WorkitemOwner;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowOriginator</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowOriginator'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowOriginator")]
+    public WorkflowUser parmWorkflowOriginator(WorkflowUser _WorkflowOriginator = WorkflowOriginator)
+    {
+        WorkflowOriginator = _WorkflowOriginator;
+
+        return WorkflowOriginator;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowOwner</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowOwner'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowOwner")]
+    public WorkflowOwner parmWorkflowOwner(WorkflowOwner _WorkflowOwner = WorkflowOwner)
+    {
+        WorkflowOwner = _WorkflowOwner;
+
+        return WorkflowOwner;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowLastActionUser</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowLastActionUser'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowLastActionUser")]
+    public str parmWorkflowLastActionUser(str _WorkflowLastActionUser = WorkflowLastActionUser)
+    {
+        WorkflowLastActionUser = _WorkflowLastActionUser;
+
+        return WorkflowLastActionUser;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmUserEmail</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowUserEmail'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:Email")]
+    public Email parmUserEmail(Email _UserEmail = UserEmail)
+    {
+        UserEmail = _UserEmail;
+
+        return UserEmail;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowWorkItemSubject</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowWorkItemSubject'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowWorkItemSubject")]
+    public WorkflowWorkItemSubject parmWorkflowWorkItemSubject(WorkflowWorkItemSubject _WorkflowWorkItemSubject = WorkflowWorkItemSubject)
+    {
+        WorkflowWorkItemSubject = _WorkflowWorkItemSubject;
+
+        return WorkflowWorkItemSubject;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowWorkItemDescription</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowStepInstruction'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowStepInstruction")]
+    public WorkflowStepInstruction parmWorkflowWorkItemDescription(WorkflowStepInstruction _WorkflowWorkItemDescription = WorkflowWorkItemDescription)
+    {
+        WorkflowWorkItemDescription = _WorkflowWorkItemDescription;
+
+        return WorkflowWorkItemDescription;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmOutcome</Name>
+				<Source><![CDATA[
+    [DataMember('OutcomeName'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:OutcomeName")]
+    public WorkflowOutcomeName parmOutcome(WorkflowOutcomeName _Outcome = Outcome)
+    {
+        Outcome = _Outcome;
+
+        return Outcome;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmOutcomeList</Name>
+				<Source><![CDATA[
+    [DataMember('ListOfOutcomes'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:OutcomeName")]
+    public Array parmOutcomeList(Array _OutcomeList = OutcomeList)
+    {
+        OutcomeList = _OutcomeList;
+
+        return OutcomeList;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowComment</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowComment'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowLastNote")]
+    public WorkflowComment parmWorkflowComment(WorkflowComment _WorkflowComment = WorkflowComment)
+    {
+        WorkflowComment = _WorkflowComment;
+
+        return WorkflowComment;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowSequenceNumber</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowSequenceNumber'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowSequenceNumber")]
+    public WorkflowSequenceNumber parmWorkflowSequenceNumber(WorkflowSequenceNumber _WorkflowSequenceNumber = WorkflowSequenceNumber)
+    {
+        WorkflowSequenceNumber = _WorkflowSequenceNumber;
+
+        return WorkflowSequenceNumber;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowInstanceNumber</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowInstanceId'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowInstanceNumber")]
+    public str parmWorkflowInstanceNumber(str _WorkflowInstanceNumber = WorkflowInstanceNumber)
+    {
+        WorkflowInstanceNumber = _WorkflowInstanceNumber;
+
+        return WorkflowInstanceNumber;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowCreatedDateTime</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowCreatedDateTime'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowCreatedDateTime")]
+    public CreatedDateTime parmWorkflowCreatedDateTime(CreatedDateTime _WorkflowCreatedDateTime = WorkflowCreatedDateTime)
+    {
+        WorkflowCreatedDateTime = _WorkflowCreatedDateTime;
+
+        return WorkflowCreatedDateTime;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowVersionNumber</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowVersion'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowConfigurationVersionId")]
+    public WorkflowConfigurationVersionId parmWorkflowVersionNumber(WorkflowConfigurationVersionId _WorkflowVersionNumber = WorkflowVersionNumber)
+    {
+        WorkflowVersionNumber = _WorkflowVersionNumber;
+
+        return WorkflowVersionNumber;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmSerializedWorkflowDocumentData</Name>
+				<Source><![CDATA[
+    [DataMember('SerializedWorkflowDocumentData'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowSerializedData")]
+    public Array parmSerializedWorkflowDocumentData(Array _SerializedWorkflowDocumentData = SerializedWorkflowDocumentData)
+    {
+        SerializedWorkflowDocumentData = _SerializedWorkflowDocumentData;
+
+        return SerializedWorkflowDocumentData;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmLinkToWeb</Name>
+				<Source><![CDATA[
+    [DataMember('LinkToWeb'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowLinkToWeb")]
+    public str parmLinkToWeb(str _LinkToWeb = LinkToWeb)
+    {
+        LinkToWeb = _LinkToWeb;
+
+        return LinkToWeb;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowDueDate</Name>
+				<Source><![CDATA[
+    [DataMember('WorkflowDueDate'), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowDueDate")]
+    public WorkflowDueDateTime parmWorkflowDueDate(WorkflowDueDateTime _WorkflowDueDate = WorkflowDueDate)
+    {
+        WorkflowDueDate = _WorkflowDueDate;
+
+        return WorkflowDueDate;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmAttachments</Name>
+				<Source><![CDATA[
+    //Standart
+
+    //Custom data
+    [DataMember("AttachedDocuments"), BusinessEventsDataMember("AttachmentStream")]
+    public Array parmAttachments(Array _attachedDocuments = AttachedDocuments)
+    {
+        AttachedDocuments = _attachedDocuments;
+        return AttachedDocuments;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmFileNames</Name>
+				<Source><![CDATA[
+    [DataMember("FileNames"), BusinessEventsDataMember("AttachmentNames")]
+    public Array parmFileNames(Array _fileNames = fileNames)
+    {
+        FileNames = _fileNames;
+        return FileNames;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmCustomData</Name>
+				<Source><![CDATA[
+    [DataMember("CustomData"), BusinessEventsDataMember("Custom Data")]
+    public Array parmCustomData(Array _customData = CustomData)
+    {
+        CustomData = _customData;
+        return CustomData;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmCustomSubject</Name>
+				<Source><![CDATA[
+    [DataMember("CustomSubject"), BusinessEventsDataMember("Approval Subject")]
+    public str parmCustomSubject(str _customSubject = CustomSubject)
+    {
+        CustomSubject = _customSubject;
+        return CustomSubject;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmIsActive</Name>
+				<Source><![CDATA[
+    [DataMember("IsActive"), BusinessEventsDataMember("Is Active")]
+    public str parmIsActive(str _IsActive = IsActive)
+    {
+        IsActive = _IsActive;
+        return IsActive;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmRecordCompany</Name>
+				<Source><![CDATA[
+    [DataMember("RecordCompanyId"), BusinessEventsDataMember("Record company id")]
+    public str parmRecordCompany(str _recordCompany = RecordCompanyId)
+    {
+        RecordCompanyId = _recordCompany;
+        return RecordCompanyId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmRecordRefRecId</Name>
+				<Source><![CDATA[
+    [DataMember("RecordRefRecId"), BusinessEventsDataMember("Record refrecid")]
+    public str parmRecordRefRecId(str _refRecId = RecordRefRecId)
+    {
+        RecordRefRecId = _refRecId;
+        return RecordRefRecId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmRecordRefTableId</Name>
+				<Source><![CDATA[
+    [DataMember("RecordRefTableId"), BusinessEventsDataMember("Record table id")]
+    public str parmRecordRefTableId(str _refTableId = RecordRefTableId)
+    {
+        RecordRefTableId = _refTableId;
+        return RecordRefTableId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmRecordRefTableName</Name>
+				<Source><![CDATA[
+    [DataMember("RecordRefTableName"), BusinessEventsDataMember("Record table name")]
+    public str parmRecordRefTableName(str _refTableName = RecordRefTableName)
+    {
+        RecordRefTableName = _refTableName;
+        return RecordRefTableName;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowTemplateName</Name>
+				<Source><![CDATA[
+    //Custom data
+
+    //Extends Level
+    [DataMember("WorkflowTemplateName"), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowTemplateName")]
+    public WorkflowTypeName parmWorkflowTemplateName(WorkflowTypeName _workflowTemplateName = workflowTemplateName)
+    {
+        workflowTemplateName = _workflowTemplateName;
+        return workflowTemplateName;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowDocument</Name>
+				<Source><![CDATA[
+    [DataMember("WorkflowDocument"), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowDocument")]
+    public str parmWorkflowDocument(str _workflowDocument = workflowDocument)
+    {
+        workflowDocument = _workflowDocument;
+        return workflowDocument;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowEventCategory</Name>
+				<Source><![CDATA[
+    [DataMember("EventCategory"), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:EventCategory")]
+    public WorkflowEventCategory parmWorkflowEventCategory(WorkflowEventCategory _eventCategory = eventCategory)
+    {
+        eventCategory = _eventCategory;
+        return eventCategory;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowCorrelationId</Name>
+				<Source><![CDATA[
+    [DataMember("WorkflowCorrelationId"), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowCorrelationId")]
+    public str parmWorkflowCorrelationId(str _workflowCorrelationId = workflowCorrelationId)
+    {
+        workflowCorrelationId = _workflowCorrelationId;
+        return workflowCorrelationId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmRecId</Name>
+				<Source><![CDATA[
+    [DataMember("ContextRecId"), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:ContextRecId")]
+    public RefRecId parmRecId(RefRecId _recId = recId)
+    {
+        recId = _recId;
+        return recId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmWorkflowConfigurationId</Name>
+				<Source><![CDATA[
+    [DataMember("WorkflowConfigurationId"), BusinessEventsDataMember("@BusinessEventsWorkflowDataMemberAttributes:WorkflowConfigurationId")]
+    public str parmWorkflowConfigurationId(str _workflowConfiguration = workflowConfigurationId)
+    {
+        workflowConfigurationId  = _workflowConfiguration;
+        return workflowConfigurationId;
+    }
+    //Extends Level
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

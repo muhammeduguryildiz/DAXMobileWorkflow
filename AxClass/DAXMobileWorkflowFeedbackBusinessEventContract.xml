@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DAXMobileWorkflowFeedbackBusinessEventContract</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[DataContract]
+final class DAXMobileWorkflowFeedbackBusinessEventContract extends BusinessEventsContract
+{
+    private str EnvironmentName;
+    private str FlowId;
+    private str FlowRunId;
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>newFromFeedbackTable</Name>
+				<Source><![CDATA[
+    public static DAXMobileWorkflowFeedbackBusinessEventContract newFromFeedbackTable(DAXMobileWorkflowFeedbackTable _feedbackTable)
+    {
+        var contract = new DAXMobileWorkflowFeedbackBusinessEventContract();
+        contract.initialize(_feedbackTable);
+
+        return contract;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>initialize</Name>
+				<Source><![CDATA[
+    private void initialize(DAXMobileWorkflowFeedbackTable _feedbackTable)
+    {
+        EnvironmentName = _feedbackTable.EnvironmentName;
+        FlowId = _feedbackTable.FlowId;
+        FlowRunId = _feedbackTable.FlowRunId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>new</Name>
+				<Source><![CDATA[
+    private void new()
+    {
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmEnvironmentName</Name>
+				<Source><![CDATA[
+    [DataMember('EnvironmentName'), BusinessEventsDataMember("EnvironmentName")]
+    public str parmEnvironmentName(str _EnvironmentName = EnvironmentName)
+    {
+        EnvironmentName = _EnvironmentName;
+
+        return EnvironmentName;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmFlowId</Name>
+				<Source><![CDATA[
+    [DataMember('FlowId'), BusinessEventsDataMember("FlowId")]
+    public str parmFlowId(str _FlowId = FlowId)
+    {
+        FlowId = _FlowId;
+
+        return FlowId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmFlowRunId</Name>
+				<Source><![CDATA[
+    [DataMember('FlowRunId'), BusinessEventsDataMember("FlowRunId")]
+    public str parmFlowRunId(str _FlowRunId = FlowRunId)
+    {
+        FlowRunId = _FlowRunId;
+
+        return FlowRunId;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

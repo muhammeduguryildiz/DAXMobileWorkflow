@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxTable xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DAXMobileWorkflowFeedbackTable</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+public class DAXMobileWorkflowFeedbackTable extends common
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>createRecord</Name>
+				<Source><![CDATA[
+    public static void createRecord(str _environmentName, str _flowName, str _flowRunId, RefRecId _refRecId, RefTableId _RefTableId,str _refCompanyId = null)
+    {
+        DAXMobileWorkflowFeedbackTable feedback;
+
+        ttsbegin;
+        feedback.EnvironmentName = _environmentName;
+        feedback.FlowId = _flowName;
+        feedback.FlowRunId = _flowRunId;
+        feedback.RefRecId = _refRecId;
+        feedback.RefTableId = _RefTableId;
+        feedback.RefCompanyId = _refCompanyId;
+        feedback.insert();
+        ttscommit;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>find</Name>
+				<Source><![CDATA[
+    public static DAXMobileWorkflowFeedbackTable find(RefRecId _refRecId, RefTableId _refTableId, DataAreaId _refDataArea)
+    {
+        DAXMobileWorkflowFeedbackTable feedbackTable;
+
+        select firstonly feedbackTable
+        where feedbackTable.RefCompanyId == _refDataArea
+           && feedbackTable.RefRecId == _refRecId
+           && feedbackTable.RefTableId == _refTableId;
+
+        return feedbackTable;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>deleteRecord</Name>
+				<Source><![CDATA[
+    public static void deleteRecord(str _environmentName, str _flowName, str _flowRunId)
+    {
+        DAXMobileWorkflowFeedbackTable feedbackTable;
+
+        ttsbegin;
+
+        select firstonly forupdate feedbackTable
+        where feedbackTable.EnvironmentName == _environmentName
+           && feedbackTable.FlowId == _flowName
+           && feedbackTable.FlowRunId == _flowRunId;
+
+        if(feedbackTable)
+            feedbackTable.delete();
+
+        ttscommit;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+	<SubscriberAccessLevel>
+		<Read>Allow</Read>
+	</SubscriberAccessLevel>
+	<ClusteredIndex>FlowRunIdx</ClusteredIndex>
+	<PrimaryIndex>FlowRunIdx</PrimaryIndex>
+	<SaveDataPerCompany>No</SaveDataPerCompany>
+	<DeleteActions />
+	<FieldGroups>
+		<AxTableFieldGroup>
+			<Name>AutoReport</Name>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoLookup</Name>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoIdentification</Name>
+			<AutoPopulate>Yes</AutoPopulate>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoSummary</Name>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoBrowse</Name>
+			<Fields />
+		</AxTableFieldGroup>
+	</FieldGroups>
+	<Fields>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldInt">
+			<Name>RefTableId</Name>
+			<ExtendedDataType>RefTableId</ExtendedDataType>
+		</AxTableField>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldString">
+			<Name>RefCompanyId</Name>
+			<ExtendedDataType>CompanyId</ExtendedDataType>
+		</AxTableField>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldInt64">
+			<Name>RefRecId</Name>
+			<ExtendedDataType>RefRecId</ExtendedDataType>
+		</AxTableField>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldString">
+			<Name>EnvironmentName</Name>
+			<Label>EnvironmentName</Label>
+			<StringSize>255</StringSize>
+		</AxTableField>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldString">
+			<Name>FlowId</Name>
+			<Label>FlowId</Label>
+			<StringSize>255</StringSize>
+		</AxTableField>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldString">
+			<Name>FlowRunId</Name>
+			<Label>FlowRunId</Label>
+			<StringSize>255</StringSize>
+		</AxTableField>
+	</Fields>
+	<FullTextIndexes />
+	<Indexes>
+		<AxTableIndex>
+			<Name>FlowRunIdx</Name>
+			<Fields>
+				<AxTableIndexField>
+					<DataField>FlowRunId</DataField>
+				</AxTableIndexField>
+			</Fields>
+		</AxTableIndex>
+	</Indexes>
+	<Mappings />
+	<Relations />
+	<StateMachines />
+</AxTable>

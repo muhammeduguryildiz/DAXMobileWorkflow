@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxTable xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DAXWorkflowTypesParameters</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+public class DAXWorkflowTypesParameters extends common
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>TableName</Name>
+				<Source><![CDATA[
+    edit TableName TableName(
+        boolean         _set,
+        TableName       _name
+        )
+    {
+        Dictionary  dict;
+        tableId     id;
+
+        if (_set)
+        {
+            dict = new Dictionary();
+            id = dict.tableName2Id(_name);
+            if (id)
+                this.RefTableId = id;
+        }
+
+        return tableid2pname(this.RefTableId);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>find</Name>
+				<Source><![CDATA[
+    public static DAXWorkflowTypesParameters find(TableId _tableId)
+    {
+        DAXWorkflowTypesParameters types;
+
+        select firstonly types
+            where types.RefTableId == _tableId;
+
+        return types;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>isActive</Name>
+				<Source><![CDATA[
+    public static boolean isActive(str _correlationId)
+    {
+        boolean found = false;
+
+        DAXWorkflowTypesParameters      types;
+        WorkflowTrackingStatusTable trackingStatus;
+
+        select firstonly trackingStatus
+            where trackingStatus.CorrelationId == str2Guid(_correlationId);
+
+        TableId tableId = trackingStatus.ContextTableId;
+        DataAreaId dataAreaId = trackingStatus.ContextCompanyId;
+
+        if(dataAreaId != "")
+        {
+            types = DAXWorkflowTypesParameters::find(tableId);
+
+            if(types.isEnabled == NoYes::Yes)
+                found = true;
+        }
+
+        return found;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+	<SubscriberAccessLevel>
+		<Read>Allow</Read>
+	</SubscriberAccessLevel>
+	<TableGroup>Parameter</TableGroup>
+	<ClusteredIndex>RefTableIdx</ClusteredIndex>
+	<PrimaryIndex>RefTableIdx</PrimaryIndex>
+	<SaveDataPerCompany>No</SaveDataPerCompany>
+	<DeleteActions />
+	<FieldGroups>
+		<AxTableFieldGroup>
+			<Name>AutoReport</Name>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoLookup</Name>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoIdentification</Name>
+			<AutoPopulate>Yes</AutoPopulate>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoSummary</Name>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoBrowse</Name>
+			<Fields />
+		</AxTableFieldGroup>
+	</FieldGroups>
+	<Fields>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldInt">
+			<Name>RefTableId</Name>
+			<AssetClassification>Customer Content</AssetClassification>
+			<ExtendedDataType>RefTableId</ExtendedDataType>
+			<Label>Ref Table Num</Label>
+		</AxTableField>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldEnum">
+			<Name>isEnabled</Name>
+			<Label>Active</Label>
+			<EnumType>NoYes</EnumType>
+		</AxTableField>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldString">
+			<Name>Subject</Name>
+			<ExtendedDataType>String255</ExtendedDataType>
+			<Label>Mail subject</Label>
+		</AxTableField>
+	</Fields>
+	<FullTextIndexes />
+	<Indexes>
+		<AxTableIndex>
+			<Name>RefTableIdx</Name>
+			<Fields>
+				<AxTableIndexField>
+					<DataField>RefTableId</DataField>
+				</AxTableIndexField>
+			</Fields>
+		</AxTableIndex>
+	</Indexes>
+	<Mappings />
+	<Relations />
+	<StateMachines />
+</AxTable>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>BusinessEventsWorkflowWorkItemDataContract_DAX_MobileWorkflow_Extension</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[ExtensionOf(classStr(BusinessEventsWorkflowWorkItemDataContract))]
+final class BusinessEventsWorkflowWorkItemDataContract_DAX_MobileWorkflow_Extension
+{
+    private Array AttachedDocuments;
+    private Array FileNames;
+    private Array CustomData;
+    private str   CustomSubject;
+    private str   IsActive;
+    private str   RecordCompanyId;
+    private str   RecordRefRecId;
+    private str   RecordRefTableId;
+    private str   RecordRefTableName;
+
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>parmAttachments</Name>
+				<Source><![CDATA[
+    [DataMember("AttachedDocuments"), BusinessEventsDataMember("AttachmentStream")]
+    public Array parmAttachments(Array _attachedDocuments = AttachedDocuments)
+    {
+        AttachedDocuments = _attachedDocuments;
+        return AttachedDocuments;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmFileNames</Name>
+				<Source><![CDATA[
+    [DataMember("FileNames"), BusinessEventsDataMember("AttachmentNames")]
+    public Array parmFileNames(Array _fileNames = fileNames)
+    {
+        FileNames = _fileNames;
+        return FileNames;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmCustomData</Name>
+				<Source><![CDATA[
+    [DataMember("CustomData"), BusinessEventsDataMember("Custom Data")]
+    public Array parmCustomData(Array _customData = CustomData)
+    {
+        CustomData = _customData;
+        return CustomData;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmCustomSubject</Name>
+				<Source><![CDATA[
+    [DataMember("CustomSubject"), BusinessEventsDataMember("Approval Subject")]
+    public str parmCustomSubject(str _customSubject = CustomSubject)
+    {
+        CustomSubject = _customSubject;
+        return CustomSubject;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmIsActive</Name>
+				<Source><![CDATA[
+    [DataMember("IsActive"), BusinessEventsDataMember("Is Active")]
+    public str parmIsActive(str _IsActive = IsActive)
+    {
+        IsActive = _IsActive;
+        return IsActive;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmRecordCompany</Name>
+				<Source><![CDATA[
+    [DataMember("RecordCompanyId"), BusinessEventsDataMember("Record company id")]
+    public str parmRecordCompany(str _recordCompany = RecordCompanyId)
+    {
+        RecordCompanyId = _recordCompany;
+        return RecordCompanyId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmRecordRefRecId</Name>
+				<Source><![CDATA[
+    [DataMember("RecordRefRecId"), BusinessEventsDataMember("Record refrecid")]
+    public str parmRecordRefRecId(str _refRecId = RecordRefRecId)
+    {
+        RecordRefRecId = _refRecId;
+        return RecordRefRecId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmRecordRefTableId</Name>
+				<Source><![CDATA[
+    [DataMember("RecordRefTableId"), BusinessEventsDataMember("Record table id")]
+    public str parmRecordRefTableId(str _refTableId = RecordRefTableId)
+    {
+        RecordRefTableId = _refTableId;
+        return RecordRefTableId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>parmRecordRefTableName</Name>
+				<Source><![CDATA[
+    [DataMember("RecordRefTableName"), BusinessEventsDataMember("Record table name")]
+    public str parmRecordRefTableName(str _refTableName = RecordRefTableName)
+    {
+        RecordRefTableName = _refTableName;
+        return RecordRefTableName;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

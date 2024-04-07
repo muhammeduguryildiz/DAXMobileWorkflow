@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>BusinessEventsPublisher_DAX_MobileWorkflow_Extension</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[ExtensionOf(classStr(BusinessEventsPublisher))]
+final class BusinessEventsPublisher_DAX_MobileWorkflow_Extension
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>publish</Name>
+				<Source><![CDATA[
+    public void publish(BusinessEventsBase _businessEvent)
+    {
+        next publish(_businessEvent);
+
+        BusinessEventsContract contract = _businessEvent.getBusinessEventsContract();
+
+        if(contract != null)
+        {
+            if(contract is BusinessEventsWorkflowWorkItemDataContract)
+            {
+                BusinessEventsWorkflowWorkItemDataContract workflowWorkItemDataContract = _businessEvent.getBusinessEventsContract() as BusinessEventsWorkflowWorkItemDataContract;
+
+                if(workflowWorkItemDataContract.parmWorkflowUserEmail() != "")
+                {
+                    if(DAXWorkflowTypesParameters::isActive(workflowWorkItemDataContract.parmWorkflowCorrelationId()))
+                    {
+                        DAXMobileWFHelper helper = DAXMobileWFHelper::construct(workflowWorkItemDataContract.parmWorkflowCorrelationId());
+                        helper.run();
+
+                        workflowWorkItemDataContract.parmIsActive("Yes");
+                        workflowWorkItemDataContract.parmAttachments(helper.getAttachmentStreamArray());
+                        workflowWorkItemDataContract.parmFileNames(helper.getAttachmentNamesArray());
+                        workflowWorkItemDataContract.parmCustomData(helper.getRecordDataArray());
+                        workflowWorkItemDataContract.parmCustomSubject(helper.getSubject());
+                        workflowWorkItemDataContract.parmRecordRefRecId(helper.getRefRecId());
+                        workflowWorkItemDataContract.parmRecordRefTableId(helper.getRefTableId());
+                        workflowWorkItemDataContract.parmRecordRefTableName(helper.getRefTableName());
+
+                        if(helper.getCompanyId() == "")
+                        {
+                            workflowWorkItemDataContract.parmRecordCompany("none");
+                        }
+                        else
+                        {
+                            workflowWorkItemDataContract.parmRecordCompany(helper.getCompanyId());
+                        }
+
+                        helper.sendCustomBusinessEventRequest(workflowWorkItemDataContract);
+                    }
+                }
+            }
+        }
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>DAXMobileWorkflowFeedbackBusinessEvent</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+[BusinessEvents(classStr(DAXMobileWorkflowFeedbackBusinessEventContract), 'DAXMobileWorkflowFeedbackBusinessEvent', 'DAXMobileWorkflowFeedbackBusinessEvent', ModuleAxapta::General)]
+final class DAXMobileWorkflowFeedbackBusinessEvent extends BusinessEventsBase
+{
+    private DAXMobileWorkflowFeedbackTable FeedbackTable;
+
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>parmFeedbackTable</Name>
+				<Source><![CDATA[
+    private DAXMobileWorkflowFeedbackTable parmFeedbackTable(DAXMobileWorkflowFeedbackTable _FeedbackTable = FeedbackTable)
+    {
+        FeedbackTable = _FeedbackTable;
+
+        return FeedbackTable;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>newFromFeedbackTable</Name>
+				<Source><![CDATA[
+    public static DAXMobileWorkflowFeedbackBusinessEvent newFromFeedbackTable(DAXMobileWorkflowFeedbackTable _feedbackTable)
+    {
+        DAXMobileWorkflowFeedbackBusinessEvent businessEvent = new DAXMobileWorkflowFeedbackBusinessEvent();
+        businessEvent.parmFeedbackTable(_feedbackTable);
+
+        return businessEvent;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>new</Name>
+				<Source><![CDATA[
+    private void new()
+    {
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>buildContract</Name>
+				<Source><![CDATA[
+    [Wrappable(true), Replaceable(true)]
+    public BusinessEventsContract buildContract()
+    {
+        return DAXMobileWorkflowFeedbackBusinessEventContract::newFromFeedbackTable(FeedbackTable);
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>
