@@ -5,9 +5,6 @@
 		<Declaration><![CDATA[
 class DAXMobileWFHelper 
 {
-    Newtonsoft.Json.JsonTextWriter jsonTextWriter;
-    System.IO.StringWriter         stringWriter;
-
     str gWorkflowCorrelationId;
     DataAreaId gCompanyId;
     RecId gRecId;

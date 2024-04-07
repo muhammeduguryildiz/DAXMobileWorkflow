@@ -12,6 +12,42 @@ public class DAXMobileWorkflowFieldSetup extends FormRun
 }
 ]]></Source>
 			</Method>
+			<Method>
+				<Name>fieldNameList</Name>
+				<Source><![CDATA[
+    public void fieldNameList(TableId _tableId)
+    {
+        SysDictTable    dictTable = new SysDictTable(_tableId);
+        SysDictField    dictField;
+        FieldId         fieldId = dictTable.fieldNext(0);
+        TreeNode        treeNode;
+
+
+        DAXTmpTableFieldNames   DAXTmpTableFieldNames;
+        ttsbegin;
+        delete_from DAXTmpTableFieldNames;
+        while (fieldId)
+        {
+            dictField = dictTable.fieldObject(fieldId);
+
+            if (dictField.isSql() && !dictField.isSystem())
+            {
+                
+                treeNode = dictField.treeNode();
+                DAXTmpTableFieldNames.clear();
+                DAXTmpTableFieldNames.fieldName = dictField.name();
+                DAXTmpTableFieldNames.fieldLabel = SysLabel::labelId2String(treeNode.AOTgetProperty("Label"),SysUserInfo::find(curUserId()).Language);
+                DAXTmpTableFieldNames.insert();
+            }
+
+            fieldId = dictTable.fieldNext(fieldId);
+        }
+        ttscommit;
+        
+    }
+
+]]></Source>
+			</Method>
 		</Methods>
 		<DataSources xmlns="" />
 		<DataControls xmlns="">
@@ -29,22 +65,22 @@ public class DAXMobileWorkflowFieldSetup extends FormRun
         {
             //super();
     
-            if(TRYWorkflowFieldParametersLine.TRYTableId == 0)
+            if(DAXWorkflowFieldParametersLine.RefTableId == 0)
             {
-                throw error("Lütfen önce referans tablo seçiniz");
+                throw error("Please select reference table first.");
             }
             else
             {
-                TRYUserFieldHiddenParameterLine::fieldNameList(TRYWorkflowFieldParametersLine.TRYTableId);
+                element.fieldNameList(DAXWorkflowFieldParametersLine.RefTableId);
     
                 Query query = new Query();
                 QueryBuildDataSource queryBuildDataSource;
     
                 SysTableLookup sysTableLookup;
-                sysTableLookup = SysTableLookup::newParameters(tableNum(TRYTmpTableFieldNames),this);
-                sysTableLookup.addLookupField(fieldNum(TRYTmpTableFieldNames,fieldName));
-                sysTableLookup.addLookupField(fieldNum(TRYTmpTableFieldNames,FieldLabel));
-                queryBuildDataSource = query.addDataSource(tableNum(TRYTmpTableFieldNames));
+                sysTableLookup = SysTableLookup::newParameters(tableNum(DAXTmpTableFieldNames),this);
+                sysTableLookup.addLookupField(fieldNum(DAXTmpTableFieldNames,fieldName));
+                sysTableLookup.addLookupField(fieldNum(DAXTmpTableFieldNames,FieldLabel));
+                queryBuildDataSource = query.addDataSource(tableNum(DAXTmpTableFieldNames));
                 sysTableLookup.parmQuery(query);
                 sysTableLookup.performFormLookup();
             }

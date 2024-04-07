@@ -71,15 +71,15 @@ public class DAXMobileWorkflowFeedbackEntity extends common
 			</Method>
 		</Methods>
 	</SourceCode>
-	<Label>@TRY:TRYMobileWFEntity</Label>
+	<Label>DAXMobileWorkflowFeedbacks</Label>
 	<SubscriberAccessLevel>
 		<Read>Allow</Read>
 	</SubscriberAccessLevel>
 	<IsPublic>Yes</IsPublic>
 	<IsReadOnly>Yes</IsReadOnly>
 	<PrimaryKey>EntityKey</PrimaryKey>
-	<PublicCollectionName>TRYMobileWorkflowFeedbacksV2</PublicCollectionName>
-	<PublicEntityName>TRYMobileWorkflowFeedbackV2</PublicEntityName>
+	<PublicCollectionName>DAXMobileWorkflowFeedbacks</PublicCollectionName>
+	<PublicEntityName>DAXMobileWorkflowFeedback</PublicEntityName>
 	<DeleteActions />
 	<FieldGroups>
 		<AxTableFieldGroup>
